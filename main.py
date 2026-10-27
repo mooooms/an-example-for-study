@@ -1,5 +1,11 @@
 import random
 
+score = {
+    "player": 0,
+    "computer": 0,
+    "draw": 0
+}
+
 board = [" " for _ in range(9)]
 
 
@@ -11,6 +17,13 @@ def show_board():
     print("---+---+---")
     print(f" {board[6]} | {board[7]} | {board[8]} ")
     print()
+
+
+def show_score():
+    print("\n=== СЧЁТ ===")
+    print(f"Ты:         {score['player']}")
+    print(f"Компьютер:  {score['computer']}")
+    print(f"Ничьи:      {score['draw']}")
 
 
 def check_winner():
@@ -40,8 +53,8 @@ def player_move():
         try:
             position = int(input("Выбери клетку (1-9): "))
 
-            if position < 1 or position > 9:
-                print("Нужно выбрать число от 1 до 9.")
+            if not 1 <= position <= 9:
+                print("Введи число от 1 до 9.")
                 continue
 
             position -= 1
@@ -54,7 +67,7 @@ def player_move():
             break
 
         except ValueError:
-            print("Введи число.")
+            print("Нужно ввести число.")
 
 
 def computer_move():
@@ -68,10 +81,11 @@ def computer_move():
 
 def game():
     global board
+
     board = [" " for _ in range(9)]
 
-    print("\n=== КРЕСТИКИ-НОЛИКИ ===")
-    print("Ты играешь за X, компьютер — за O.")
+    print("\n=== НОВАЯ ИГРА ===")
+    print("Ты — X, компьютер — O.")
 
     while True:
         show_board()
@@ -82,10 +96,15 @@ def game():
 
         if result:
             show_board()
-            if result == "draw":
-                print("Ничья!")
-            else:
+
+            if result == "X":
                 print("Ты победил! 🎉")
+                score["player"] += 1
+
+            elif result == "draw":
+                print("Ничья!")
+                score["draw"] += 1
+
             break
 
         computer_move()
@@ -94,26 +113,37 @@ def game():
 
         if result:
             show_board()
-            if result == "draw":
-                print("Ничья!")
-            else:
+
+            if result == "O":
                 print("Компьютер победил!")
+                score["computer"] += 1
+
+            elif result == "draw":
+                print("Ничья!")
+                score["draw"] += 1
+
             break
 
 
 def main():
     while True:
-        print("\n=== МЕНЮ ===")
+        print("\n=== КРЕСТИКИ-НОЛИКИ ===")
         print("1. Начать игру")
-        print("2. Выйти")
+        print("2. Показать счёт")
+        print("3. Выйти")
 
         choice = input("Выбери действие: ")
 
         if choice == "1":
             game()
+
         elif choice == "2":
+            show_score()
+
+        elif choice == "3":
             print("До встречи!")
             break
+
         else:
             print("Неверный выбор.")
 
